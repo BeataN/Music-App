@@ -59,50 +59,57 @@ var app = {
         var previewPlayer = '<audio controls class = "audio-play"><source src="' + track.preview_url + '" type="audio/mpeg"></audio>';
         $("#tracks-list").append('<li>' + imgHtml + '<div class="track-details">' + artistHtml +' '+ '-'+ ' '+nameHtml + previewPlayer + '</div></li>');
         $('#tracks-list').addClass('moved-to-top-ul');
-      })
+    });
 
     }
   }
-},
+};
 
 var appYT = {
-  init : function(){
-    appYT.searchModuleYouTube.init();
-  },
-searchModuleYouTube : {
-  init : function(){
-    appYT.searchModuleYouTube.prepareEvents();
-  },
-prepareEvents : function(){
-  $(".btn-search-songs-yt").on("click", function(e){
-    var songName = $("#search-field").val();
-    $('#main-search').addClass('moved-to-top');
-    appYT.searchModuleYouTube.getYouTubeSongs(songName);
-  });
-},
-getYouTubeSongs : function(songName){
-    $.ajax({
-        url: "https://www.googleapis.com/youtube/v3/search",
-        data: {
-          part: 'snippet',
-          key: 'AIzaSyDRiHqtrdxrs9wiMPUr595ys9h6CJwFwiY',
-          q: songName
+    init : function(){
+        appYT.searchModuleYouTube.init();
+    },
+    searchModuleYouTube : {
+        init : function(){
+            appYT.searchModuleYouTube.prepareEvents();
         },
-        success: function(result){
-          appYT.songsListModule.showSongs(result);
-
-
-
+        prepareEvents : function(){
+            $(".btn-search-songs-yt").on("click", function(e){
+                var songName = $("#search-field").val();
+                $('#main-search').addClass('moved-to-top');
+                appYT.searchModuleYouTube.getYouTubeSongs(songName);
+            });
         },
-        error: function(result){
-          console.log('error=', result)
+        getYouTubeSongs : function(songName){
+            $.ajax({
+                url: "https://www.googleapis.com/youtube/v3/search",
+                data: {
+                  part: 'snippet',
+                  key: 'AIzaSyDRiHqtrdxrs9wiMPUr595ys9h6CJwFwiY',
+                  q: songName
+                },
+                success: function(result){
+                  appYT.songsListModule.showSongs(result);
+
+                },
+                error: function(result){
+                  console.log('error=', result);
+                }
+
+              });
         }
+    },
 
-      });
-  }
-},
+    songsListModule : {
+      showSongs : function(result){
 
-songsListModule : {
-  showSongs : function(result){
-  console.log(result)};
-},
+        $.each(result.items, function(i,track){
+          console.log(result);
+          var videoHtml = '<iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen>' + '</iframe>';
+          $('#tracks-list').append('<li>' + videoHtml + '</li>');
+          $('#tracks-list').addClass('moved-to-top-ul');
+        });
+
+      }
+    }
+};
