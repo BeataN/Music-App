@@ -102,11 +102,13 @@ var appYT = {
 
     songsListModule : {
       showSongs : function(result){
+        $("#tracks-list li").remove();
+        
 
         $.each(result.items, function(i,track){
-          console.log(result);
-          var videoHtml = '<iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allowfullscreen>' + '</iframe>';
-          $('#tracks-list').append('<li>' + videoHtml + '</li>');
+          console.log(result)
+          var videoHtml = '<iframe width="560" height="315" src="https://www.youtube.com/embed/'+track.id.videoId+'" frameborder="0" allowfullscreen>' + '</iframe>';
+          $('#tracks-list').append('<li class="yt-list">' + videoHtml + '</li>');
           $('#tracks-list').addClass('moved-to-top-ul');
         });
 
